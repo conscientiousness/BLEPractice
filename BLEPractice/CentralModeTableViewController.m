@@ -12,8 +12,8 @@
 #import "TalkingViewController.h"
 
 float const kTableViewReloadMaxTimeInterval = 1.0;
-NSString * const kTargetService = @"9999";
-NSString * const kTargetCharacteristic = @"AAAA";
+NSString * const kTargetService = @"1A2B";
+NSString * const kTargetCharacteristic = @"3C4D";
 
 @interface CentralModeTableViewController () <CBCentralManagerDelegate, CBPeripheralDelegate>
 {

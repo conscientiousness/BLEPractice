@@ -33,6 +33,11 @@
     // MARK: - Step 20
     NSString *content = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
     NSLog(@"Receive from Peripheral: %@",content);
+    
+    if(content.length>0)
+    {
+        _logTextView.text = [NSString stringWithFormat:@"%@%@",content,_logTextView.text];
+    }
     // End Step 20
 }
 
@@ -52,7 +57,7 @@
     [textField resignFirstResponder];
     
     if(textField.text.length > 0) {
-        NSString *context = [NSString stringWithFormat:@"[iPhone6] %@\n",textField.text];
+        NSString *context = [NSString stringWithFormat:@"[%@] %@\n",[[UIDevice currentDevice] model],textField.text];
         NSData *data = [context dataUsingEncoding:NSUTF8StringEncoding];
         
         [_talkingPeripheral writeValue:data forCharacteristic:_talkingCharacteristic type:CBCharacteristicWriteWithResponse];

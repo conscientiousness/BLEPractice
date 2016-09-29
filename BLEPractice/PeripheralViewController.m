@@ -9,8 +9,8 @@
 #import "PeripheralViewController.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 
-NSString * const kServiceUUID = @"9999";
-NSString * const kCharacteristicUUID = @"AAAA";
+NSString * const kServiceUUID = @"1A2B";
+NSString * const kCharacteristicUUID = @"3C4D";
 NSString * const kPeripheralName = @"Happy Chat Room";
 
 @interface PeripheralViewController ()<CBPeripheralManagerDelegate, UITextFieldDelegate>
@@ -75,7 +75,7 @@ NSString * const kPeripheralName = @"Happy Chat Room";
     }
     
     return NO;
-    // end Stwp 28
+    // end Step 28
 }
 
 #pragma mark - CBPeripheralDelegate
@@ -108,7 +108,7 @@ NSString * const kPeripheralName = @"Happy Chat Room";
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic {
     
     // MARK: - Step 26
-    NSString *hello = [NSString stringWithFormat:@"[%@] Welcome ! Here is %@, (Total:%ld, Max Length:%ld)",kPeripheralName,kPeripheralName,chatCharacteristic.subscribedCentrals.count,central.maximumUpdateValueLength];
+    NSString *hello = [NSString stringWithFormat:@"[SYSTEM] Welcome! (Total:%ld, Max Length:%ld)\n",chatCharacteristic.subscribedCentrals.count,central.maximumUpdateValueLength];
     
     [self sendText:hello central:central];
     
@@ -117,7 +117,11 @@ NSString * const kPeripheralName = @"Happy Chat Room";
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(nonnull CBCharacteristic *)characteristic {
+    NSString *left = [NSString stringWithFormat:@"[SYSTEM] A Device Left. (Total:%ld)\n",chatCharacteristic.subscribedCentrals.count];
     
+    [self sendText:left central:nil];
+    
+    _logTextView.text = [NSString stringWithFormat:@"%@%@",left,_logTextView.text];
 }
 
 // [_talkingPeripheral writeValue:data forCharacteristic:_talkingCharacteristic type:CBCharacteristicWriteWithResponse];
@@ -136,7 +140,7 @@ NSString * const kPeripheralName = @"Happy Chat Room";
             
             // 發給其他user
             [self sendText:content central:nil];
-            _logTextView.text = [NSString stringWithFormat:@"%@%@",content,_logTextView];
+            _logTextView.text = [NSString stringWithFormat:@"%@%@",content,_logTextView.text];
         }
     }
     // End Step 29
